@@ -6,7 +6,7 @@
 /*   By: aroussea <aroussea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 13:46:56 by aroussea          #+#    #+#             */
-/*   Updated: 2023/03/17 15:57:29 by aroussea         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:20:52 by aroussea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_int(char *str, t_list **stack_a)
 	i = 0;
 	while (str[i])
 	{
-		if (i == 0 && str[i] == '-')
+		if (i == 0 && str[i] == '-' && ft_isdigit(str[i + 1]))
 			i++;
 		else if (!ft_isdigit(str[i++]))
 			return (0);
@@ -41,12 +41,27 @@ static int	check_int(char *str, t_list **stack_a)
 	return (1);
 }
 
+static int	check_stack(t_list *stack, long tmp)
+{
+	t_list	*current;
+
+	current = stack;
+	if (tmp > 2147483647 || tmp < -2147483648)
+		return (0);
+	while (current)
+	{
+		if (current->content == tmp)
+			return (0);
+		current = current->next;
+	}
+	return (1);
+}
+
 static t_list	*put_stack(t_list *stack, char *str, int i)
 {
-	int	x;
-	int	j;
-	int	tmp;
-	t_list *current;
+	int		x;
+	int		j;
+	long	tmp;
 
 	x = 0;
 	while (str[i])
@@ -57,12 +72,10 @@ static t_list	*put_stack(t_list *stack, char *str, int i)
 		{
 			j = 0;
 			tmp = ft_atoi(&str[i]);
-			current = stack;
-			while (current)
+			if (!check_stack(stack, tmp))
 			{
-				if (current->content == tmp)
-					return (NULL);
-				current = current->next;
+				ft_free_list(stack);
+				return (NULL);
 			}
 			ft_lstadd_back(&stack, ft_lstnew(ft_atoi(&str[i])));
 		}
@@ -74,13 +87,17 @@ static t_list	*put_stack(t_list *stack, char *str, int i)
 
 static t_list	*parse_string(char *str)
 {
-	int	i;
+	int		i;
 	t_list	*stack_a;
 
 	i = 0;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]) && str[i] != ' ' && str[i] != '-')
+			return (NULL);
+		if (i > 0 && str[i] == '-' && str[i - 1] != ' ')
+			return (NULL);
+		if (str[i] == '-' && !ft_isdigit(str[i + 1]))
 			return (NULL);
 		i++;
 	}
@@ -92,16 +109,16 @@ static t_list	*parse_string(char *str)
 
 t_stack	*args_parsing(int argc, char **argv)
 {
-	int	i;
+	int		i;
 	t_list	*stack_a;
-	t_stack *stack;
+	t_stack	*stack;
 
 	i = 1;
 	if (argc == 2)
 	{
 		stack_a = parse_string(argv[1]);
 		if (!stack_a)
-			return ((t_stack *)ft_free_list(stack_a));
+			return (NULL);
 	}
 	else
 	{

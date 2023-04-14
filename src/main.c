@@ -6,7 +6,7 @@
 /*   By: aroussea <aroussea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 13:54:58 by aroussea          #+#    #+#             */
-/*   Updated: 2023/03/21 17:54:04 by aroussea         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:15:11 by aroussea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_stack	*stack;
-	// t_list *current;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (argc > 1)
@@ -25,26 +24,13 @@ int	main(int argc, char **argv)
 		if (!stack)
 		{
 			stack = ft_free_stack(stack);
-			write(1, "Error\n", 7);
+			write(2, "Error\n", 6);
 			return (1);
 		}
+		stack->stack_b = NULL;
 		push_swap(stack);
-		// current = stack->stack_a;
-		// while (current)
-		// {
-		// 	printf("%i ; faux_index : %i\n", current->content, current->findex);
-		// 	current = current->next;
-		// }
-		// printf("\n");
-		// current = stack->stack_b;
-		// while (current)
-		// {
-		// 	printf("%i\n", current->content);
-		// 	current = current->next;
-		// }
 		stack = ft_free_stack(stack);
 		return (0);
 	}
-	write(1, "Error\n", 7);
 	return (1);
 }
