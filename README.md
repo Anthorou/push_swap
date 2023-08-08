@@ -1,0 +1,2 @@
+# push_swap
+Push_swap est un projet réalisé dans le cadre de mon école 42 Québec. L'objectif de ce projet est de concevoir un algorithme de tri optimisé pour deux piles (désignées comme piles A et B), en utilisant un ensemble restreint d'opérations. L'enjeu principal réside dans la minimisation du nombre de mouvements nécessaires pour trier les éléments présents dans les piles, tout en respectant les contraintes imposées par les opérations disponibles.
